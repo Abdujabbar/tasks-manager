@@ -6,6 +6,6 @@
  * Time: 11:25 AM
  */
 if(($message = \system\Session::getInstance()->getFlash('success'))) {
-    echo \components\Alert::show('success', $message);
+    echo \helpers\Alert::show('success', $message);
 }
 echo "I am index.php file";

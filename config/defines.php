@@ -16,5 +16,12 @@ define("CONTROLLER_SUFFIX", "Controller");
 define("ACTION_PREFIX", "action");
 define("DEFAULT_LAYOUTS_PATH", VIEWS_PATH.DIRECTORY_SEPARATOR."layouts");
 define("CONFIG_FILE", __DIR__ . "/config.php");
+define("PUBLIC_PATH", APP_ROOT . 'public');
+define('ASSETS_PATH', PUBLIC_PATH . DIRECTORY_SEPARATOR . 'assets');
+define('MEDIA_PATH', ASSETS_PATH . DIRECTORY_SEPARATOR . 'media');
+
+
+
+
 define("ADMIN_USERNAME", "admin");
 define("ADMIN_PASS", "123");

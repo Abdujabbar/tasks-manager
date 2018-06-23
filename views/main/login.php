@@ -4,7 +4,7 @@
         <h4>Login Form</h4>
         <?php
         if(($message = \system\Session::getInstance()->getFlash('danger'))) {
-            echo \components\Alert::show('danger', $message);
+            echo \helpers\Alert::show('danger', $message);
         }
         ?>
         <form method="post" action="">

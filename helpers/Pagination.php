@@ -6,7 +6,7 @@
  * Time: 1:58 PM
  */
 
-namespace components;
+namespace helpers;
 /**
  * Class Pagination
  * @package Pagination
@@ -38,9 +38,9 @@ class Pagination
      */
     public function __construct(string $baseURL, int $total = 0, int $itemsPerPage = 0, $currentPageParam = 'page')
     {
-        if (!filter_var($baseURL, FILTER_VALIDATE_URL)) {
-            throw new \Exception("Invalid url param");
-        }
+//        if (!filter_var($baseURL, FILTER_VALIDATE_URL)) {
+//            throw new \Exception("Invalid url param");
+//        }
 
         $this->baseURL = $baseURL;
 

@@ -6,7 +6,7 @@
  * Time: 5:25 PM
  */
 
-namespace components;
+namespace helpers;
 
 
 class Alert
