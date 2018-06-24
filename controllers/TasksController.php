@@ -64,6 +64,7 @@ class TasksController extends Controller
     {
 
         if (App::getInstance()->getAuthUser()->isGuest()) {
+            Session::getInstance()->setFlash('danger', 'Please login!');
             return $this->redirect("/main/login");
         }
 
