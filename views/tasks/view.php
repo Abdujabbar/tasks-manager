@@ -18,7 +18,7 @@
             <tr>
                 <td><b>Image</b></td>
                 <td>
-                    <?php $imagePath = str_replace(PUBLIC_PATH, "", MEDIA_PATH . DIRECTORY_SEPARATOR .  $task->image)?>
+                    <?php $imagePath = str_replace(APP_ROOT, "", MEDIA_PATH . DIRECTORY_SEPARATOR .  $task->image)?>
                     <div id="image-view">
                         <img src="<?=$imagePath?>" />
                     </div>

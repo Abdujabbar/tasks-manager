@@ -46,7 +46,7 @@ $pathInfo = \system\App::getInstance()->getRequest()->getPathInfo();
                 <td><?php echo $task->username ?></td>
                 <td><?php echo $task->email; ?></td>
                 <td>
-                    <?php $imagePath = str_replace(PUBLIC_PATH, "", MEDIA_PATH . DIRECTORY_SEPARATOR .  $task->image)?>
+                    <?php $imagePath = str_replace(APP_ROOT, "", MEDIA_PATH . DIRECTORY_SEPARATOR .  $task->image)?>
                     <a href="<?php echo $imagePath?>" target="_blank">
                         <?php echo  $task->image ?>
                     </a>
