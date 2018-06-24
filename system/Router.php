@@ -16,7 +16,7 @@ class Router
         if(!empty($_SERVER['PATH_INFO'])) {
             $pathInfo = $_SERVER['PATH_INFO'];
         }
-        $defaultController = "main";
+        $defaultController = DEFAULT_CONTROLLER;
         $defaultAction = "index";
 
         $pathInfo = trim($pathInfo, "/");

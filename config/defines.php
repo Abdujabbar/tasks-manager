@@ -19,7 +19,7 @@ define("CONFIG_FILE", __DIR__ . "/config.php");
 define("PUBLIC_PATH", APP_ROOT . 'public');
 define('ASSETS_PATH', PUBLIC_PATH . DIRECTORY_SEPARATOR . 'assets');
 define('MEDIA_PATH', ASSETS_PATH . DIRECTORY_SEPARATOR . 'media');
-
+define('DEFAULT_CONTROLLER', 'tasks');
 
 
 
