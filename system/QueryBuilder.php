@@ -81,7 +81,7 @@ class QueryBuilder
 
         $query .= $this->buildWhereCondition($where);
 
-        $query .= "order by {$orderby} $order";
+        $query .= " order by {$orderby} $order";
 
         $query .= " LIMIT :offset, :limit";
 
@@ -91,9 +91,8 @@ class QueryBuilder
             $statement->bindParam(":{$w['column']}", $w['value']);
         }
 
-        $statement->bindParam(":offset", $offset);
-        $statement->bindParam(":limit", $limit);
-
+        $statement->bindParam(":offset", $offset, \PDO::PARAM_INT);
+        $statement->bindParam(":limit", $limit, \PDO::PARAM_INT);
         try {
             $statement->execute();
             return $statement->fetchAll(\PDO::FETCH_OBJ);
@@ -115,18 +114,19 @@ class QueryBuilder
         }
         $fields = array_keys($data);
         $query = "insert into {$table}(" . implode(",", $fields) . ")" .
-            "VALUES(" . implode(".", array_map(function ($param) {
+            " VALUES(" . implode(",", array_map(function ($param) {
                 return ":" . $param;
             }, $fields)) . ")";
         $statement = $this->pdo->prepare($query);
 
-        foreach ($data as $column => $value) {
-            $statement->bindColumn(":{$column}", $value);
+        foreach($data as $column => $value) {
+            $statement->bindValue(":$column", $value);
         }
 
         try {
             return $statement->execute();
         } catch (\PDOException $e) {
+            echo $e->getMessage();die();
             throw $e;
         }
     }
@@ -140,20 +140,23 @@ class QueryBuilder
      */
     public function update($table, $data = [], $where = [])
     {
+        if(isset($data['created_at'])) {
+            unset($data['created_at']);
+        }
         $query = "update {$table} SET ";
         foreach ($data as $column => $value) {
-            $query .= "{$column}=:$column";
+            $query .= "{$column}=:$column,";
         }
-
+        $query = trim($query, ",");
         $query .= $this->buildWhereCondition($where);
 
         $statement = $this->pdo->prepare($query);
         foreach ($data as $column => $value) {
-            $statement->bindColumn(":$column", $value);
+            $statement->bindValue(":$column", $value);
         }
 
         foreach ($where as $w) {
-            $statement->bindColumn(":{$w['column']}", $w['value']);
+            $statement->bindParam(":{$w['column']}", $w['value']);
         }
 
         try {
@@ -175,11 +178,13 @@ class QueryBuilder
         foreach ($where as $w) {
             if (count(array_diff($whereConditionParams, array_keys($w)))) {
                 throw new \Exception("where array must have 3 fields: column, operator, value");
+                die();
             }
-            $whereCondition .= "AND " . $w['column'] . $w['operator'] . ":{$w['value']}";
+            $whereCondition .= "AND " . $w['column'] . $w['operator'] . ":{$w['column']}";
         }
         if ($whereCondition) {
             $whereCondition = trim($whereCondition, "AND");
+            $whereCondition = " WHERE {$whereCondition}";
         }
         return $whereCondition;
     }

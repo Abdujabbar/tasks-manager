@@ -94,4 +94,7 @@ fabric.properties
 .idea/sonarlint
 .idea/
 
+/vendor/
+/public/assets/media/
+
 # End of https://www.gitignore.io/api/macos,phpstorm

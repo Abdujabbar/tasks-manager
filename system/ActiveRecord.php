@@ -25,7 +25,9 @@ class ActiveRecord
         $this->queryBuilder = new QueryBuilder();
     }
 
-
+    /**
+     * @return mixed
+     */
     public function tableName()
     {
         return $this->table;
@@ -38,39 +40,58 @@ class ActiveRecord
      */
     public function save($validation = true, $clearErrors = true)
     {
+        if ($clearErrors) {
+            $this->setErrorsEmpty();
+        }
 
         if ($validation && !$this->validate()) {
             return false;
         }
 
-        if ($clearErrors) {
-            $this->setErrorsEmpty();
-        }
 
         $fields = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
         $data = [];
         foreach ($fields as $field) {
+            if($field->name === $this->primaryKey) continue;
             $data[$field->name] = $this->{$field->name};
         }
         $data = array_filter($data);
         if ($this->{$this->primaryKey} > 0) {
-            return $this->queryBuilder->update($this->tableName(), $data, [$this->primaryKey => $this->{$this->primaryKey}]);
+            return $this->queryBuilder->update($this->tableName(),
+                $data,
+                [
+                    [
+                        'column' => 'id',
+                        'operator' => '=',
+                        'value' => $this->{$this->primaryKey},
+                    ]
+                ]
+            );
         } else {
             return $this->queryBuilder->insert($this->tableName(), $data);
         }
     }
 
+    /**
+     * @return bool
+     */
     public function beforeValidate()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function afterValidate()
     {
         return count($this->errors) === 0;
     }
 
-
+    /**
+     * @param string $name
+     * @return array|mixed|null
+     */
     public function getErrors($name = '')
     {
         if (empty($name)) {
@@ -79,13 +100,21 @@ class ActiveRecord
         return !empty($this->errors[$name]) ? $this->errors[$name] : null;
     }
 
+    /**
+     * @void
+     */
     public function setErrorsEmpty()
     {
         $this->errors = [];
     }
 
+    /**
+     * @return bool
+     */
     public function validate()
     {
+        if(!$this->beforeValidate())
+            return false;
         return $this->afterValidate();
     }
 
@@ -98,6 +127,32 @@ class ActiveRecord
         if ($this->{$this->primaryKey}) {
             $this->queryBuilder->delete($this->tableName(), [$this->primaryKey => $this->{$this->primaryKey}]);
         }
+    }
+
+    public function findByIdentity($id = 0) {
+        $items = [];
+        try {
+            $items = $this->queryBuilder->select(
+                $this->tableName(),
+                '*',
+                [
+                    [
+                        'column' => 'id',
+                        'operator' => '=',
+                        'value' => $id,
+                    ]
+                ],
+                1,
+                0
+            );
+        } catch (\PDOException $e) {
+            echo __FILE__ . " " . __LINE__ . " " . $e->getMessage();
+        }
+
+        if(count($items)) {
+            return array_pop($items);
+        }
+        return null;
     }
 
 
@@ -143,11 +198,15 @@ class ActiveRecord
         ];
     }
 
+    /**
+     * @param array $params
+     * @return bool
+     */
     public function load($params = []) {
         $loaded = false;
         foreach($params as $key => $value) {
             if(property_exists($this, $key)) {
-                $this->{$key} = $value;
+                $this->{$key} = htmlspecialchars($value);
                 $loaded = true;
             }
         }

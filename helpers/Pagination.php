@@ -36,7 +36,7 @@ class Pagination
      * @param string $currentPageParam
      * @throws \Exception
      */
-    public function __construct(string $baseURL, int $total = 0, int $itemsPerPage = 0, $currentPageParam = 'page')
+    public function __construct($baseURL, $total = 0, $itemsPerPage = 0, $currentPageParam = 'page')
     {
 //        if (!filter_var($baseURL, FILTER_VALIDATE_URL)) {
 //            throw new \Exception("Invalid url param");
@@ -56,15 +56,15 @@ class Pagination
         $this->currentPageParam = $currentPageParam;
         $this->currentPage = isset($_GET[$this->currentPageParam]) && intval($_GET[$this->currentPageParam]) &&
         $_GET[$this->currentPageParam] > 0 ? ($_GET[$this->currentPageParam] - 1) : 0;
-        $this->pagesCount = intval($this->total / $this->itemsPerPage);
+        $this->pagesCount = intval(ceil($this->total / $this->itemsPerPage));
     }
 
     /**
      * @return string
      */
-    public function render(): string
+    public function render()
     {
-        if ($this->total == 0 || $this->itemsPerPage == 0 || $this->itemsPerPage > $this->total) {
+        if ($this->total == 0 || $this->itemsPerPage == 0 || $this->itemsPerPage >= $this->total) {
             return "";
         }
         $response = "";
@@ -81,7 +81,7 @@ class Pagination
     /**
      * @return string
      */
-    public function renderPreviousArrow(): string
+    public function renderPreviousArrow()
     {
         $response = "";
         if ($this->currentPage + 1 > 1) {
@@ -93,7 +93,7 @@ class Pagination
     /**
      * @return string
      */
-    public function renderNextArrow(): string
+    public function renderNextArrow()
     {
         $response = "";
         if ($this->currentPage + 2 <= $this->pagesCount) {
@@ -106,7 +106,7 @@ class Pagination
      * @param int $page
      * @return string
      */
-    public function renderItem(int $page, $symbol = ''): string
+    public function renderItem($page, $symbol = '')
     {
         if (!$symbol) {
             $symbol = "{$page}";

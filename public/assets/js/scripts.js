@@ -1,0 +1,11 @@
+$(document).ready(function(){
+    $('#username').keyup(function(){
+        $('#username-view').text($(this).val())
+    });
+    $('#email').keyup(function(){
+        $('#email-view').text($(this).val())
+    });
+    $('#content').keyup(function(){
+        $('#content-view').text($(this).val())
+    })
+});

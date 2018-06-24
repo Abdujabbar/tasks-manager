@@ -6,7 +6,7 @@
  * Time: 10:21 AM
  */
 
-
+require_once __DIR__ . "/vendor/autoload.php";
 spl_autoload_register(function ($class) {
     $file = APP_ROOT .  str_replace("\\", "/", $class) . PHP_FILE_EXT;
     @include_once $file;

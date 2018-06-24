@@ -12,7 +12,7 @@ namespace helpers;
 class Alert
 {
     public static function show($name, $message) {
-        return "<div class=\"alert alert-{$name}\" role=\"alert\">
+        return "<div class=\"alert alert-{$name}\" role=\"alert\" style='margin-top: 5px;'>
                     {$message}
                 </div>";
     }

@@ -39,10 +39,13 @@ class Request
         if(empty($name)) {
             return $this->postParams;
         }
-
         return !empty($this->postParams[$name]) ? $this->postParams[$name] : null;
     }
 
-
-
+    public function getPathInfo() {
+        if(isset($_SERVER['PATH_INFO'])) {
+            return $_SERVER['PATH_INFO'];
+        }
+        return "/";
+    }
 }

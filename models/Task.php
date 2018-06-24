@@ -8,6 +8,7 @@
 
 namespace models;
 
+use helpers\ImageUploader;
 use system\ActiveRecord;
 use system\App;
 
@@ -22,45 +23,90 @@ class Task extends ActiveRecord
     public $status;
     public $created_at;
     public $updated_at;
-    const STATUS_PENDING = 'pending';
-    const STATUS_IN_PROGRESS = 'in-progress';
-    const STATUS_SUCCESS = 'success';
+    const STATUS_DECLINED = 0;
+    const STATUS_PENDING = 1;
+    const STATUS_IN_PROGRESS = 2;
+    const STATUS_CLOSED = 3;
 
-
-    protected $availableFormatsForUpload = '';
-
-    public function __construct()
+    /**
+     * @return array
+     */
+    public static function getStatusList()
     {
-        parent::__construct();
+        return [
+            self::STATUS_DECLINED => 'declined',
+            self::STATUS_PENDING => 'pending',
+            self::STATUS_IN_PROGRESS => 'in progress',
+            self::STATUS_CLOSED => 'closed',
+        ];
     }
 
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
+    public static function getStatusLabel($status = '')
+    {
+        $labels = self::getStatusList();
+        return !empty($labels[$status]) ? $labels[$status] : null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function validate()
+    {
+        $this->beforeValidate();
+        $fields = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        foreach ($fields as $field) {
+            if ($field->name === $this->primaryKey) continue;
+            if (!empty($this->errors[$field->name])) continue;
+            if (empty($this->{$field->name})) {
+                $this->errors[$field->name] = "{$field->name} cannot be empty";
+            }
+
+            if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+                $this->errors['email'] = 'Email field must contain valid email address';
+            }
+        }
+
+        return $this->afterValidate();
+    }
+
+    /**
+     * @return bool
+     */
+    public function afterValidate()
+    {
+        if (parent::afterValidate())
+            return true;
+
+        ImageUploader::unsetUploadedImage($this->image);
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
     public function beforeValidate()
     {
+        if (!$this->id) {
+            $this->created_at = time();
+            $this->status = self::STATUS_PENDING;
+        }
+        $this->updated_at = time();
+
         if (parent::beforeValidate()) {
-            if (!$this->id) {
-                $this->created_at = time();
+            $imageUploader = new \helpers\ImageUploader('image');
+            if (($image = $imageUploader->processUpload())) {
+                $this->image = $image;
             } else {
-                $this->updated_at = time();
-            }
-            $this->validatePostedImage();
-            $fields = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
-            foreach ($fields as $field) {
-                if (empty($this->{$field->name}) && empty($this->errors[$this->{$field->name}])) {
-                    $this->errors[$field->name] = "{$field->name} cannot be empty";
+                if(!$this->image) {
+                    $this->errors['image'] = $imageUploader->getError();
                 }
             }
         }
-    }
-
-    protected function validatePostedImage()
-    {
-        var_dump($_FILES);
-        die();
-        if (isset($_FILES['image'])) {
-            if (!empty($_FILES['image']['name'])) {
-
-            }
-        }
+        return true;
     }
 
 
