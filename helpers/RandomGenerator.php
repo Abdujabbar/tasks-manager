@@ -17,6 +17,16 @@ class RandomGenerator
         return self::$_instance;
     }
 
+    public function __clone()
+    {
+        // TODO: Implement __clone() method.
+    }
+
+    public function __wakeup()
+    {
+        // TODO: Implement __wakeup() method.
+    }
+
     public function randomInt($from, $to) {
         return rand($from, $to);
     }
