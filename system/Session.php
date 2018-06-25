@@ -17,6 +17,16 @@ class Session
         session_start();
     }
 
+    public function __clone()
+    {
+        // TODO: Implement __clone() method.
+    }
+
+    public function __wakeup()
+    {
+        // TODO: Implement __wakeup() method.
+    }
+
     /**
      * @return Session
      */

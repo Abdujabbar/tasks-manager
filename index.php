@@ -12,6 +12,6 @@ spl_autoload_register(function ($class) {
 });
 
 date_default_timezone_set("Asia/Karachi");
-$app = new system\App();
+$app = \system\App::getInstance();
 
 $app->run();

@@ -19,6 +19,16 @@ class Configs
         $this->configs = $configs;
     }
 
+    private function __clone()
+    {
+        // TODO: Implement __clone() method.
+    }
+
+    private function __wakeup()
+    {
+        // TODO: Implement __wakeup() method.
+    }
+
     public static function getInstance($configs = []) {
         if(!self::$instance) {
             self::$instance = new self($configs);

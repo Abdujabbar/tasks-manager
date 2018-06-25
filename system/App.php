@@ -15,13 +15,23 @@ class App
     /**
      * App constructor.
      */
-    public function __construct()
+    private function __construct()
     {
         $this->route = new Router();
         $configurations = require_once CONFIG_FILE;
         Configs::getInstance($configurations);
         $this->authUser = new AuthUser();
         $this->request = new Request();
+    }
+
+    public function __clone()
+    {
+        // TODO: Implement __clone() method.
+    }
+
+    public function __wakeup()
+    {
+        // TODO: Implement __wakeup() method.
     }
 
     public static function getInstance() {
