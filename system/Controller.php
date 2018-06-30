@@ -32,7 +32,9 @@ class Controller
      * @throws \Exception
      */
     public function render($view, $data = []) {
-        $this->view->render($view, $data);
+        $class = new \ReflectionClass($this);
+        $directory = strtolower(str_replace(CONTROLLER_SUFFIX, "", str_replace($class->getNamespaceName() . "\\", "", $class->getName())));
+        $this->view->render($directory . DIRECTORY_SEPARATOR .  $view, $data);
     }
 
 

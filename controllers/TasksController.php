@@ -32,7 +32,7 @@ class TasksController extends Controller
         $offset = App::getInstance()->getRequest()->get('page') ? App::getInstance()->getRequest()->get('page') : 1;
         $taskResults = $tasks->search($limit, ($offset - 1) * $limit);
         $pagination = new Pagination("/tasks/index", $taskResults['total'], $limit, 'page');
-        $this->render('tasks/list', [
+        $this->render('list', [
             'tasks' => $taskResults['items'],
             'paginator' => $pagination,
         ]);
@@ -57,7 +57,7 @@ class TasksController extends Controller
                 die();
             }
         }
-        $this->render('tasks/form', ['task' => $task]);
+        $this->render('form', ['task' => $task]);
     }
 
     public function actionUpdate()
@@ -65,7 +65,7 @@ class TasksController extends Controller
 
         if (App::getInstance()->getAuthUser()->isGuest()) {
             Session::getInstance()->setFlash('danger', 'Please login!');
-            return $this->redirect("/main/login");
+            $this->redirect("/main/login");
         }
 
         $id = filter_var($this->getRequest()->get('id'), FILTER_SANITIZE_NUMBER_INT);
@@ -87,9 +87,14 @@ class TasksController extends Controller
             }
         }
 
-        $this->render('tasks/form', ['task' => $task]);
+        $this->render('form', ['task' => $task]);
     }
 
+    /**
+     * @param $task Task
+     * @param $id
+     * @return mixed
+     */
     protected function findModel($task, $id)
     {
         $data = $task->findByIdentity($id);
@@ -101,6 +106,9 @@ class TasksController extends Controller
         return $data;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function actionView()
     {
         $id = filter_var($this->getRequest()->get('id'), FILTER_SANITIZE_NUMBER_INT);
@@ -111,12 +119,13 @@ class TasksController extends Controller
             die();
         }
 
+
         $task = new Task();
         $data = $this->findModel($task, $id);
 
         $task->load((array)$data);
 
-        $this->render("tasks/view", ['task' => $task]);
+        $this->render("view", ['task' => $task]);
     }
 
 }

@@ -17,7 +17,7 @@ class MainController extends Controller
      * @throws \Exception
      */
     public function actionIndex() {
-        $this->render('main/index', []);
+        $this->render('index', []);
     }
 
     /**
@@ -36,7 +36,7 @@ class MainController extends Controller
                 Session::getInstance()->setFlash('danger', 'login or password incorrect');
             }
         }
-        $this->render("main/login", ['login' => $login, 'password' => $password]);
+        $this->render("login", ['login' => $login, 'password' => $password]);
     }
 
 
