@@ -3,7 +3,7 @@
     <div class="col-6">
         <h4>Login Form</h4>
         <?php
-        if(($message = \system\Session::getInstance()->getFlash('danger'))) {
+        if (($message = \system\Session::getInstance()->getFlash('danger'))) {
             echo \helpers\Alert::show('danger', $message);
         }
         ?>

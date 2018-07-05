@@ -1,0 +1,22 @@
+version: '2'
+services:
+  web:
+      image: taskmanager_php
+      command: php -S 0.0.0.0:8000 -t app/public
+      volumes:
+        - ./:/app
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+
+  db:
+      image: mysql:5.6
+      container_name: "tasksmanagerdb"
+      volumes:
+        - ./mysql-dump:/docker-entrypoint-initdb.d
+      ports:
+        - "3306:3306"
+      environment:
+        - "MYSQL_ROOT_PASSWORD=2211141"
+        - "MYSQL_DATABASE=taskmanagerdb"

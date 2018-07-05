@@ -59,8 +59,12 @@ class Task extends ActiveRecord
         $this->beforeValidate();
         $fields = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($fields as $field) {
-            if ($field->name === $this->primaryKey) continue;
-            if (!empty($this->errors[$field->name])) continue;
+            if ($field->name === $this->primaryKey) {
+                continue;
+            }
+            if (!empty($this->errors[$field->name])) {
+                continue;
+            }
             if (empty($this->{$field->name})) {
                 $this->errors[$field->name] = "{$field->name} cannot be empty";
             }
@@ -78,8 +82,9 @@ class Task extends ActiveRecord
      */
     public function afterValidate()
     {
-        if (parent::afterValidate())
+        if (parent::afterValidate()) {
             return true;
+        }
 
         ImageUploader::unsetUploadedImage($this->image);
         return false;
@@ -101,13 +106,11 @@ class Task extends ActiveRecord
             if (($image = $imageUploader->processUpload())) {
                 $this->image = $image;
             } else {
-                if(!$this->image) {
+                if (!$this->image) {
                     $this->errors['image'] = $imageUploader->getError();
                 }
             }
         }
         return true;
     }
-
-
 }

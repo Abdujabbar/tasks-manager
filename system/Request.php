@@ -8,7 +8,6 @@
 
 namespace system;
 
-
 class Request
 {
     private $getParams;
@@ -19,31 +18,36 @@ class Request
         $this->postParams = $_POST;
     }
 
-    public function isPost() {
+    public function isPost()
+    {
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
-    public function isGet() {
+    public function isGet()
+    {
         return $_SERVER['REQUEST_METHOD'] === 'GET';
     }
 
-    public function get($name = '') {
-        if(empty($name)) {
+    public function get($name = '')
+    {
+        if (empty($name)) {
             return $this->getParams;
         }
         return !empty($this->getParams[$name]) ? $this->getParams[$name] : null;
     }
 
 
-    public function post($name = '') {
-        if(empty($name)) {
+    public function post($name = '')
+    {
+        if (empty($name)) {
             return $this->postParams;
         }
         return !empty($this->postParams[$name]) ? $this->postParams[$name] : null;
     }
 
-    public function getPathInfo() {
-        if(isset($_SERVER['PATH_INFO'])) {
+    public function getPathInfo()
+    {
+        if (isset($_SERVER['PATH_INFO'])) {
             return $_SERVER['PATH_INFO'];
         }
         return "/";

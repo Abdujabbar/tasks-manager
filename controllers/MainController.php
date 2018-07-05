@@ -6,6 +6,7 @@
  * Time: 10:28 AM
  */
 namespace controllers;
+
 use system\App;
 use system\Auth;
 use system\Controller;
@@ -16,20 +17,22 @@ class MainController extends Controller
     /**
      * @throws \Exception
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->render('index', []);
     }
 
     /**
      * @throws \Exception
      */
-    public function actionLogin() {
+    public function actionLogin()
+    {
         $login = $this->getRequest()->post('login');
         $password = $this->getRequest()->post('password');
 
 
-        if(App::getInstance()->getRequest()->isPost()) {
-            if(App::getInstance()->getAuthUser()->login($login, $password)) {
+        if (App::getInstance()->getRequest()->isPost()) {
+            if (App::getInstance()->getAuthUser()->login($login, $password)) {
                 Session::getInstance()->setFlash('success', 'You are successful authorized.');
                 $this->redirect("/");
             } else {
@@ -40,12 +43,11 @@ class MainController extends Controller
     }
 
 
-    public function actionLogout() {
+    public function actionLogout()
+    {
         $auth = App::getInstance()->getAuthUser();
         $auth->logout();
         Session::getInstance()->setFlash("success", "You are successful logout.");
         $this->redirect("/");
     }
-
-
 }

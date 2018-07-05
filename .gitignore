@@ -95,6 +95,6 @@ fabric.properties
 .idea/
 
 /vendor/
-/assets/media/
+/public/assets/media/
 
 # End of https://www.gitignore.io/api/macos,phpstorm

@@ -7,6 +7,7 @@
  */
 
 namespace system;
+
 class ActiveRecord
 {
     protected $table;
@@ -52,12 +53,15 @@ class ActiveRecord
         $fields = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
         $data = [];
         foreach ($fields as $field) {
-            if($field->name === $this->primaryKey) continue;
+            if ($field->name === $this->primaryKey) {
+                continue;
+            }
             $data[$field->name] = $this->{$field->name};
         }
         $data = array_filter($data);
         if ($this->{$this->primaryKey} > 0) {
-            return $this->queryBuilder->update($this->tableName(),
+            return $this->queryBuilder->update(
+                $this->tableName(),
                 $data,
                 [
                     [
@@ -113,8 +117,9 @@ class ActiveRecord
      */
     public function validate()
     {
-        if(!$this->beforeValidate())
+        if (!$this->beforeValidate()) {
             return false;
+        }
         return $this->afterValidate();
     }
 
@@ -129,7 +134,8 @@ class ActiveRecord
         }
     }
 
-    public function findByIdentity($id = 0) {
+    public function findByIdentity($id = 0)
+    {
         $items = [];
         try {
             $items = $this->queryBuilder->select(
@@ -149,7 +155,7 @@ class ActiveRecord
             echo __FILE__ . " " . __LINE__ . " " . $e->getMessage();
         }
 
-        if(count($items)) {
+        if (count($items)) {
             return array_pop($items);
         }
         return null;
@@ -169,7 +175,7 @@ class ActiveRecord
         if ($sort = App::getInstance()->getRequest()->get('sort')) {
             $column = trim($sort, "-");
             if (property_exists($this, $column)) {
-                $orderby = $column;;
+                $orderby = $column;
             }
             if (strpos($sort, "-") === false) {
                 $order = 'asc';
@@ -202,15 +208,15 @@ class ActiveRecord
      * @param array $params
      * @return bool
      */
-    public function load($params = []) {
+    public function load($params = [])
+    {
         $loaded = false;
-        foreach($params as $key => $value) {
-            if(property_exists($this, $key)) {
+        foreach ($params as $key => $value) {
+            if (property_exists($this, $key)) {
                 $this->{$key} = htmlspecialchars($value);
                 $loaded = true;
             }
         }
         return $loaded;
     }
-
 }

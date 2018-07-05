@@ -6,12 +6,13 @@
  * Time: 10:37 AM
  */
 namespace system;
+
 class App
 {
     protected $route;
     private $authUser;
     private $request;
-    private static  $instance;
+    private static $instance;
     /**
      * App constructor.
      */
@@ -34,27 +35,31 @@ class App
         // TODO: Implement __wakeup() method.
     }
 
-    public static function getInstance() {
-        if(!self::$instance) {
+    public static function getInstance()
+    {
+        if (!self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    public function getAuthUser() {
+    public function getAuthUser()
+    {
         return $this->authUser;
     }
 
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
 
-    public function run() {
+    public function run()
+    {
         $parsedPath = $this->route->parseRoute();
         $controller = "\controllers\\".  ucfirst($parsedPath['controller']) . CONTROLLER_SUFFIX;
         $action = ACTION_PREFIX . ucfirst($parsedPath['action']);
-        if(!class_exists($controller)) {
+        if (!class_exists($controller)) {
             echo $controller . PHP_FILE_EXT . " File not exists.";
             \http_response_code(404);
             die();
@@ -62,7 +67,7 @@ class App
         $class = new $controller();
 
 
-        if(method_exists($class, $action)) {
+        if (method_exists($class, $action)) {
             $class->$action();
         } else {
             echo str_replace(ACTION_PREFIX, "", $action) .  " method doesn't exists";

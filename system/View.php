@@ -6,6 +6,7 @@
  * Time: 10:22 AM
  */
 namespace system;
+
 class View
 {
     public $layout = "layout";
@@ -17,8 +18,8 @@ class View
         $viewPath = VIEWS_PATH . DIRECTORY_SEPARATOR . $view . PHP_FILE_EXT;
         $layoutPath = $this->layoutsPath . DIRECTORY_SEPARATOR . $this->layout . PHP_FILE_EXT;
 
-        foreach([$viewPath, $layoutPath] as $file) {
-            if(!file_exists($file)) {
+        foreach ([$viewPath, $layoutPath] as $file) {
+            if (!file_exists($file)) {
                 throw new \Exception($file . " file not exists");
                 die();
             }
@@ -33,7 +34,8 @@ class View
     }
 
 
-    public function setLayoutsPath($layoutPath) {
+    public function setLayoutsPath($layoutPath)
+    {
         $this->layoutsPath = $layoutPath;
     }
 }

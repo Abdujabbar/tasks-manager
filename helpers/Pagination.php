@@ -7,6 +7,7 @@
  */
 
 namespace helpers;
+
 /**
  * Class Pagination
  * @package Pagination
@@ -118,8 +119,14 @@ class Pagination
 
 
         $url = $this->generateItemURL();
-        $response = sprintf("<{$this->itemTag} class='%s'><a href='{$url}' class='%s'>%s</a></{$this->itemTag}>",
-            $itemClass, $this->currentPageParam, $page, $this->itemATagClass, $symbol);
+        $response = sprintf(
+            "<{$this->itemTag} class='%s'><a href='{$url}' class='%s'>%s</a></{$this->itemTag}>",
+            $itemClass,
+            $this->currentPageParam,
+            $page,
+            $this->itemATagClass,
+            $symbol
+        );
         return $response;
     }
 
@@ -149,8 +156,8 @@ class Pagination
     /**
      * @return int
      */
-    public function getTotal() {
+    public function getTotal()
+    {
         return $this->total;
     }
-
 }

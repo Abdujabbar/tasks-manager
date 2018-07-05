@@ -8,7 +8,6 @@
 
 namespace controllers;
 
-
 use helpers\Pagination;
 use models\Task;
 use system\App;
@@ -50,7 +49,6 @@ class TasksController extends Controller
                     Session::getInstance()->setFlash('success', 'Item has been created successful');
                     $this->redirect("/tasks/index");
                 }
-
             } catch (\PDOException $e) {
                 echo $e->getMessage();
                 http_response_code(500);
@@ -62,7 +60,6 @@ class TasksController extends Controller
 
     public function actionUpdate()
     {
-
         if (App::getInstance()->getAuthUser()->isGuest()) {
             Session::getInstance()->setFlash('danger', 'Please login!');
             $this->redirect("/main/login");
@@ -127,5 +124,4 @@ class TasksController extends Controller
 
         $this->render("view", ['task' => $task]);
     }
-
 }

@@ -8,12 +8,12 @@
 
 namespace system;
 
-
 class Router
 {
-    public function parseRoute() {
+    public function parseRoute()
+    {
         $pathInfo = "/";
-        if(!empty($_SERVER['PATH_INFO'])) {
+        if (!empty($_SERVER['PATH_INFO'])) {
             $pathInfo = $_SERVER['PATH_INFO'];
         }
         $defaultController = DEFAULT_CONTROLLER;
@@ -25,11 +25,11 @@ class Router
 
         $routePath = array_filter(explode("/", $pathInfo));
 
-        if(count($routePath) > 0) {
+        if (count($routePath) > 0) {
             $defaultController = array_shift($routePath);
         }
 
-        if(count($routePath) > 0) {
+        if (count($routePath) > 0) {
             $defaultAction = array_shift($routePath);
         }
 

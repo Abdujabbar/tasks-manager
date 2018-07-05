@@ -8,9 +8,9 @@
 
 namespace helpers;
 
-
 use Gumlet\ImageResize;
 use \Gumlet\ImageResizeException;
+
 class ImageUploader
 {
     public $attribute;
@@ -34,8 +34,8 @@ class ImageUploader
 
     public function processUpload()
     {
-        if($this->validate()) {
-            if($this->resizeAndSave()) {
+        if ($this->validate()) {
+            if ($this->resizeAndSave()) {
                 return $this->name;
             }
         }
@@ -44,7 +44,7 @@ class ImageUploader
 
     public function checkFormat()
     {
-        if(!in_array($this->type, $this->availableFormats)) {
+        if (!in_array($this->type, $this->availableFormats)) {
             $this->error = "available only for images with types:" . implode(",", $this->availableFormats);
             return false;
         }
@@ -53,14 +53,14 @@ class ImageUploader
 
     public function validate()
     {
-        if(!empty($_FILES[$this->attribute])) {
-            if(!empty($_FILES[$this->attribute]['name'])) {
-                foreach($_FILES[$this->attribute] as $key => $value) {
+        if (!empty($_FILES[$this->attribute])) {
+            if (!empty($_FILES[$this->attribute]['name'])) {
+                foreach ($_FILES[$this->attribute] as $key => $value) {
                     $this->$key = $value;
                 }
                 $this->name = RandomGenerator::getInstance()->randomSequence(10) . "." . pathinfo($this->name, PATHINFO_EXTENSION);
 
-                if(!$this->checkFormat() || !$this->checkIsValidDimensions()) {
+                if (!$this->checkFormat() || !$this->checkIsValidDimensions()) {
                     return false;
                 }
                 return true;
@@ -73,7 +73,7 @@ class ImageUploader
     public function checkIsValidDimensions()
     {
         list($width, $height) = getimagesize($this->tmp_name);
-        if($width < self::MAX_WIDTH || $height < self::MAX_HEIGHT) {
+        if ($width < self::MAX_WIDTH || $height < self::MAX_HEIGHT) {
             $this->error = "minimum dimension must have ".self::MAX_WIDTH.'x'.self::MAX_HEIGHT;
             return false;
         }
@@ -81,9 +81,10 @@ class ImageUploader
     }
 
 
-    public static function unsetUploadedImage($name) {
+    public static function unsetUploadedImage($name)
+    {
         $path = MEDIA_PATH . DIRECTORY_SEPARATOR . $name;
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             unset($path);
         }
     }

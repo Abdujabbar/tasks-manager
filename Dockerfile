@@ -1,9 +1,19 @@
-FROM mysql:5.6
+FROM php:7.2-stretch
 
+RUN  apt-get update -y \
+      && apt-get install -y \
+        libxml2-dev \
+        libpng-dev \
+      && apt-get clean -y \
+    && docker-php-ext-install \
+        soap \
+        bcmath \
+        exif \
+        gd \
+        iconv \
+        intl \
+        mbstring \
+        opcache \
+        pdo_mysql
 
-ENV MYSQL_DATABASE=tasks_manager \
-    MYSQL_ROOT_PASSWORD=secret
-
-#ADD structure.sql /docker-entrypoint-initdb.d
-
-EXPOSE 3306
+EXPOSE 8000

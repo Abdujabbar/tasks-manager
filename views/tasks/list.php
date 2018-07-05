@@ -1,5 +1,5 @@
 <?php
-    if(($message = \system\Session::getInstance()->getFlash('success'))) {
+    if (($message = \system\Session::getInstance()->getFlash('success'))) {
         echo \helpers\Alert::show('success', $message);
     }
 ?>
@@ -56,7 +56,7 @@ $pathInfo = \system\App::getInstance()->getRequest()->getPathInfo();
                 <td><?php echo @date("Y.m.d H:i:s", $task->updated_at)?></td>
                 <td>
                     <a href="/tasks/view?id=<?=$task->id?>">View</a>
-                    <?php if(!\system\App::getInstance()->getAuthUser()->isGuest()):?>
+                    <?php if (!\system\App::getInstance()->getAuthUser()->isGuest()):?>
                         <a href="/tasks/update?id=<?=$task->id?>">Update</a>
                     <?php endif;?>
                 </td>

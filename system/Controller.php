@@ -6,6 +6,7 @@
  * Time: 10:22 AM
  */
 namespace system;
+
 class Controller
 {
     protected $view;
@@ -22,7 +23,8 @@ class Controller
     /**
      * @param string $layout
      */
-    public function setLayout($layout = 'layout') {
+    public function setLayout($layout = 'layout')
+    {
         $this->view->layout = $layout;
     }
 
@@ -31,19 +33,22 @@ class Controller
      * @param array $data
      * @throws \Exception
      */
-    public function render($view, $data = []) {
+    public function render($view, $data = [])
+    {
         $class = new \ReflectionClass($this);
         $directory = strtolower(str_replace(CONTROLLER_SUFFIX, "", str_replace($class->getNamespaceName() . "\\", "", $class->getName())));
         $this->view->render($directory . DIRECTORY_SEPARATOR .  $view, $data);
     }
 
 
-    public function redirect($path) {
+    public function redirect($path)
+    {
         header("Location:". $path, true, 301);
         die();
     }
 
-    public function getRequest() {
+    public function getRequest()
+    {
         return App::getInstance()->getRequest();
     }
 }

@@ -8,7 +8,6 @@
 
 namespace system;
 
-
 class Configs
 {
     protected static $instance;
@@ -29,14 +28,16 @@ class Configs
         // TODO: Implement __wakeup() method.
     }
 
-    public static function getInstance($configs = []) {
-        if(!self::$instance) {
+    public static function getInstance($configs = [])
+    {
+        if (!self::$instance) {
             self::$instance = new self($configs);
         }
         return self::$instance;
     }
 
-    public function getByName($name) {
+    public function getByName($name)
+    {
         return !empty($this->configs[$name]) ? $this->configs[$name] : null;
     }
 }

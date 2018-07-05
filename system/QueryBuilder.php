@@ -8,7 +8,6 @@
 
 namespace system;
 
-
 class QueryBuilder
 {
     protected $pdo;
@@ -61,9 +60,9 @@ class QueryBuilder
      */
     public function select($table, $columns = "*", $where = [], $limit = 10, $offset = 0, $order = 'desc', $orderby = 'id')
     {
-
-        if (empty($table))
+        if (empty($table)) {
             throw new \Exception("{$table} parameter required");
+        }
 
         $query = "select ";
         if (is_array($columns)) {
@@ -81,7 +80,7 @@ class QueryBuilder
 
         $query .= $this->buildWhereCondition($where);
 
-        $query .= " order by {$orderby} $order";
+        $query .= " order by :orderby $order";
 
         $query .= " LIMIT :offset, :limit";
 
@@ -91,8 +90,10 @@ class QueryBuilder
             $statement->bindParam(":{$w['column']}", $w['value']);
         }
 
+        $statement->bindParam(":orderby", $orderby, \PDO::PARAM_STR);
         $statement->bindParam(":offset", $offset, \PDO::PARAM_INT);
         $statement->bindParam(":limit", $limit, \PDO::PARAM_INT);
+
         try {
             $statement->execute();
             return $statement->fetchAll(\PDO::FETCH_OBJ);
@@ -119,14 +120,15 @@ class QueryBuilder
             }, $fields)) . ")";
         $statement = $this->pdo->prepare($query);
 
-        foreach($data as $column => $value) {
+        foreach ($data as $column => $value) {
             $statement->bindValue(":$column", $value);
         }
 
         try {
             return $statement->execute();
         } catch (\PDOException $e) {
-            echo $e->getMessage();die();
+            echo $e->getMessage();
+            die();
             throw $e;
         }
     }
@@ -140,7 +142,7 @@ class QueryBuilder
      */
     public function update($table, $data = [], $where = [])
     {
-        if(isset($data['created_at'])) {
+        if (isset($data['created_at'])) {
             unset($data['created_at']);
         }
         $query = "update {$table} SET ";

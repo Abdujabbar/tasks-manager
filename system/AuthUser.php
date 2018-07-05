@@ -23,17 +23,20 @@ class AuthUser
 
 
 
-    public function isGuest() {
+    public function isGuest()
+    {
         return empty($this->getId());
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
 
-    public function login($username, $password) {
-        if($username === ADMIN_USERNAME && $this->validatePassword($password, ADMIN_PASS)) {
+    public function login($username, $password)
+    {
+        if ($username === ADMIN_USERNAME && $this->validatePassword($password, ADMIN_PASS)) {
             $this->username = $username;
             $this->id = 100;
             Session::getInstance()->setSessionValue("userID", $this->id);
@@ -45,17 +48,20 @@ class AuthUser
     }
 
 
-    public function validatePassword($password, $definedPassword) {
+    public function validatePassword($password, $definedPassword)
+    {
         return $password === $definedPassword;
     }
 
-    public function logout() {
-        if(!$this->isGuest()) {
+    public function logout()
+    {
+        if (!$this->isGuest()) {
             Session::getInstance()->unsetSessionValue('userID');
         }
     }
 
-    public function getIdentity() {
+    public function getIdentity()
+    {
         return Session::getInstance()->getSessionValue('identity');
     }
 }

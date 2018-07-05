@@ -21,7 +21,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/tasks">Tasks</a>
                 </li>
-                <?php if(\system\App::getInstance()->getAuthUser()->isGuest()):?>
+                <?php if (\system\App::getInstance()->getAuthUser()->isGuest()):?>
                 <li class="nav-item">
                     <a class="nav-link" href="/main/login">Login</a>
                 </li>

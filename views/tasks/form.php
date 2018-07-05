@@ -15,8 +15,9 @@
                     <input type="text" class="form-control" id="username" name="username"
                            value="<?= $task->username ?>">
                     <?php
-                    if ($error = $task->getErrors('username'))
+                    if ($error = $task->getErrors('username')) {
                         echo \helpers\Alert::show('danger', $error);
+                    }
                     ?>
                 </div>
             </div>
@@ -25,22 +26,24 @@
                 <div class="col-sm-10">
                     <input type="email" class="form-control" id="email" name="email" value="<?= $task->email ?>">
                     <?php
-                    if ($error = $task->getErrors('email'))
+                    if ($error = $task->getErrors('email')) {
                         echo \helpers\Alert::show('danger', $error);
+                    }
                     ?>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="image" class="col-sm-2 col-form-label">Image</label>
                 <div class="col-sm-10">
-                    <?php if($task->image):?>
+                    <?php if ($task->image):?>
                         <input type="hidden" name="image" value="<?=$task->image;?>">
                     <?php endif;?>
                     <input type="file" class="form-control" id="image" name="image"
                            accept="image/jpeg,image/png,image/gif" />
                     <?php
-                    if ($error = $task->getErrors('image'))
+                    if ($error = $task->getErrors('image')) {
                         echo \helpers\Alert::show('danger', $error);
+                    }
                     ?>
                 </div>
             </div>
@@ -49,8 +52,9 @@
                 <div class="col-sm-10">
                     <textarea class="form-control" id="content" rows="3" name="content"><?php echo $task->content;?></textarea>
                     <?php
-                    if ($error = $task->getErrors('content'))
+                    if ($error = $task->getErrors('content')) {
                         echo \helpers\Alert::show('danger', $error);
+                    }
                     ?>
                 </div>
             </div>
@@ -64,8 +68,9 @@
                             <?php endforeach; ?>
                         </select>
                         <?php
-                        if ($error = $task->getErrors('status'))
+                        if ($error = $task->getErrors('status')) {
                             echo \helpers\Alert::show('danger', $error);
+                        }
                         ?>
                     </div>
                 </div>

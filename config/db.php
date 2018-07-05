@@ -6,7 +6,7 @@
  * Time: 11:59 AM
  */
 return [
-    'dsn' => 'mysql:host=0.0.0.0;dbname=tasks_manager',
+    'dsn' => 'mysql:host=tasksmanagerdb;dbname=taskmanagerdb',
     'db_user' => 'root',
-    'db_pass' => 'secret',
+    'db_pass' => '2211141',
 ];
