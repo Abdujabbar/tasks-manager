@@ -20,7 +20,7 @@ class ImageUploader
     protected $size;
     protected $tmp_name;
     protected $availableFormats = [
-        'image/jpeg',
+//        'image/jpeg',
         'image/png',
         'image/gif',
     ];
